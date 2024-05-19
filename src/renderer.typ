@@ -37,7 +37,7 @@
   if fill != none {
     content-params.insert("fill", fill)
     content-params.insert("frame", "rect")
-    content-params.insert("padding", 4pt)
+    content-params.insert("padding", (4pt, 0pt))
   }
 
   draw.content(
@@ -128,7 +128,8 @@
       italic: true,
       size: config.italic-font-size
     )
-    desc-y += 8  // TODO: change this
+
+    desc-y += config.italic-font-size / 1.2pt
   }
 
   return (shapes, desc-x, desc-y)
@@ -171,8 +172,7 @@
     anchor: "west"
   )
 
-  // TODO: change this
-  desc-y += 18
+  desc-y += config.default-font-size / 0.75pt
 
   if range_.values != none and range_.depends-on == none {
     let shapes_

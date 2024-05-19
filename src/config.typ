@@ -1,8 +1,8 @@
 #let config(
   default-font-family: "Ubuntu Mono",
-  default-font-size: 1em,
+  default-font-size: 15pt,
   italic-font-family: "Ubuntu Mono",
-  italic-font-size: 0.8em,
+  italic-font-size: 12pt,
   background: white,
   text-color: black,
   link-color: black,
