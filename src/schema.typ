@@ -1,12 +1,9 @@
 #import "config.typ" as conf
 #import "renderer.typ"
 #import "structure.typ"
+#import "xml-loader.typ"
 
 #let valid-extensions = ("yaml", "json", "xml")
-
-#let parse-xml(path) = {
-  panic("TODO")
-}
 
 #let parse-file(path) = {
   let ext = path.split(".").last()
@@ -22,7 +19,7 @@
   } else if ext == "json" {
     return json(path)
   } else if ext == "xml" {
-    return parse-xml(path)
+    return xml-loader.load(path)
   }
 }
 

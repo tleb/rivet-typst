@@ -1,7 +1,16 @@
 #import "../src/lib.typ": *
 
-#let test = schema.load("/gallery/test.yaml")
-#schema.render(test, config: config.blueprint(
-  full-page: true,
-  default-font-family: "Ubuntu Mono"
+#let test-yaml = schema.load("/gallery/test.yaml")
+#schema.render(test-yaml, config: config.config(
+  full-page: true
+))
+
+#let test-json = schema.load("/gallery/test.json")
+#schema.render(test-json, config: config.blueprint(
+  full-page: true
+))
+
+#let test-xml = schema.load("/gallery/test.xml")
+#schema.render(test-xml, config: config.dark(
+  full-page: true
 ))
