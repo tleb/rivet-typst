@@ -14,3 +14,15 @@
 #schema.render(test-xml, config: config.dark(
   full-page: true
 ))
+
+#let test-raw = schema.load(```yaml
+structures:
+  main:
+    bits: 4
+    ranges:
+      3-0:
+        name: test
+```)
+#schema.render(test-raw, config: config.config(
+  full-page: true
+))
