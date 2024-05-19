@@ -400,6 +400,13 @@
     let name-x = start-x + width / 2
     let name-y = bits-y + bit-h / 2
     
+    shapes += draw-rect(
+      bg-col,
+      start-x + bit-w / 2,
+      name-y - bit-h * 0.3,
+      width - bit-w,
+      bit-h * 0.6
+    )
     shapes += draw-text(range_.name, txt-col, name-x, name-y, fill: bg-col)
     
     if range_.description != "" {
