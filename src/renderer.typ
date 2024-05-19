@@ -449,7 +449,8 @@
     (
       width: auto,
       height: auto,
-      fill: config.background
+      fill: config.background,
+      margin: 0cm
     )
   } else {
     (:)

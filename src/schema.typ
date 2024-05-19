@@ -27,7 +27,7 @@
   let lang = schema.lang
   let content = schema.text
   if not lang in valid-extensions {
-    let fmts = valid-extensions.map(fmt => "." + fmt).join(", ")
+    let fmts = valid-extensions.join(", ")
     fmts = "(" + fmts + ")"
     panic("Unsupported format '" + lang + "'. Valid formats: " + fmts)
   }
