@@ -410,7 +410,6 @@
     shapes += draw-text(range_.name, txt-col, name-x, name-y, fill: bg-col)
     
     if range_.description != "" {
-      //draw.circle((desc-x, -desc-y), radius: 5, fill: red)
       let shapes_
       (shapes_, desc-x, desc-y) = draw-description(
         config, range_, start-x, bits-y, width, desc-x, desc-y
