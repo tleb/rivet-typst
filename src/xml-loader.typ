@@ -81,8 +81,7 @@
   )
 }
 
-#let load(path) = {
-  let content = xml(path).first()
+#let parse(content) = {
   let struct-elmts = content.children.filter(e => "tag" in e and e.tag == "structure")
 
   let structures = (:)
@@ -97,4 +96,9 @@
   return (
     structures: structures
   )
+}
+
+#let load(path) = {
+  let content = xml(path).first()
+  return parse(content)
 }

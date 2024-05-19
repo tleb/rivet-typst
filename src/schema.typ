@@ -23,7 +23,25 @@
   }
 }
 
-#let load(path-or-schema, config: auto) = {
+#let parse-raw(schema) = {
+  let lang = schema.lang
+  let content = schema.text
+  if not lang in valid-extensions {
+    let fmts = valid-extensions.map(fmt => "." + fmt).join(", ")
+    fmts = "(" + fmts + ")"
+    panic("Unsupported format '" + lang + "'. Valid formats: " + fmts)
+  }
+
+  if lang == "yaml" {
+    return yaml.decode(content)
+  } else if lang == "json" {
+    return json.decode(content)
+  } else if lang == "xml" {
+    return xml-loader.parse(xml.decode(content).first())
+  }
+}
+
+#let load(path-or-schema) = {
   let schema = if type(path-or-schema) == str {
     parse-file(path-or-schema)
   } else {
