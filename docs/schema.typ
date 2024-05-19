@@ -1,0 +1,14 @@
+/// Loads a schema from a file or a raw block.
+/// This function returns a dictionary of structures
+/// 
+/// Supported formats: #schema.valid-extensions.map(e => raw("." + e)).join(", ")
+/// - path-or-schema (str, raw): If it is a string, defines the path to load. \
+///   If it is a raw block, its content is directly parsed (the block's language will define the format to use)
+/// -> dictionary
+#let load(path-or-schema) = {}
+
+/// Renders the given schema
+/// This functions
+/// - structures (dictionary): A schema dictionary, as returned by #doc-ref("schema.load")
+/// - config (auto, dictionary): The configuration parameters, as returned by #doc-ref("config.config")
+#let render(structures, config: auto)
