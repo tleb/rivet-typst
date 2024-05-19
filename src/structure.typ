@@ -1,4 +1,4 @@
-#import "range.typ"
+#import "range.typ" as rng
 #import "util.typ"
 
 #let make(
@@ -20,30 +20,33 @@
   let ranges = (:)
 
   for (range-span, range-data) in data.ranges {
-    let (start, end) = range.parse-span(str(range-span))
+    let (start, end) = rng.parse-span(str(range-span))
     ranges.insert(
-      range.key(start, end),
-      range.load(start, end, range-data)
+      rng.key(start, end),
+      rng.load(start, end, range-data)
     )
   }
 
-  for range_ in ranges.values() {
+  let ranges2 = (:)
+  for (k, range_) in ranges {
     if range_.values != none and range_.depends-on != none {
-      let depends-key = range.key(..range_.depends-on)
+      let depends-key = rng.key(..range_.depends-on)
       let depends-range = ranges.at(depends-key)
-      let bits = range.bits(depends-range)
+      let bits = rng.bits(depends-range)
       let values = (:)
       for (v, d) in range_.values {
         v = util.z-fill(str(int(v)), bits)
         values.insert(v, d)
       }
+      range_.values = values
     }
+    ranges2.insert(k, range_)
   }
 
   return make(
     id,
     int(data.bits),
-    ranges,
+    ranges2,
     start: data.at("start", default: 0)
   )
 }
