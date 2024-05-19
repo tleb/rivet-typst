@@ -2,14 +2,14 @@
 
 RIVET _(Register / Instruction Visualizer & Explainer Tool)_ is a [Typst](https://typst.app) package for visualizing binary instructions or describing the contents of a register, using the [CeTZ](https://typst.app/universe/package/cetz) package.
 
-It is based on the [homonymous Python script](https://git.kb28.ch/HEL/rivet)
+It is based on the [homonymous Python script](https://git.kb28.ch/HEL/rivet/)
 
 ## Examples
 <table>
   <tr>
     <td>
       <a href="./gallery/example1.typ">
-        <img src="./gallery/example1.png" width="500px">
+        <img src="./gallery/example1.png" width="1000px">
       </a>
     </td>
   </tr>
@@ -19,7 +19,7 @@ It is based on the [homonymous Python script](https://git.kb28.ch/HEL/rivet)
   <tr>
     <td>
       <a href="./gallery/example2.typ">
-        <img src="./gallery/example2.png" width="500px">
+        <img src="./gallery/example2.png" width="1000px">
       </a>
     </td>
   </tr>
