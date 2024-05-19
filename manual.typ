@@ -39,7 +39,7 @@ This is a port of the #link("https://git.kb28.ch/HEL/rivet")[homonymous Python s
 Simply import `schema` from #link("src/lib.typ") and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
 #pad(left: 1em)[```typ
 #import "src/lib.typ": schema
-#let doc = schema.load("path/to/schema.typ")
+#let doc = schema.load("path/to/schema.yaml")
 #schema.render(doc)
 ```]
 
