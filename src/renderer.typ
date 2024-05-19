@@ -117,7 +117,7 @@
   let txt-col = config.text-color
   let bit-w = config.bit-height  // Why ? I don't remember
   let gap = config.values-gap
-  
+
   for (val, desc) in values.pairs().sorted(key: p => p.first()) {
     desc-y += gap
     let txt = val + " = " + desc
@@ -159,16 +159,16 @@
   let mid-x = start-x + width / 2
   shapes += draw-link(config, mid-x, start-y, desc-x, desc-y)
 
-  let txt-anchor = "west"
+  let txt-x = desc-x
 
   if config.left-labels {
-    txt-anchor -= "east"
+    txt-x -= range_.description.len() * config.default-font-size / 2pt
   }
 
   shapes += draw-text(
     range_.description,
     config.text-color,
-    desc-x, desc-y + bit-h / 2,
+    txt-x, desc-y + bit-h / 2,
     anchor: "west"
   )
 
@@ -176,7 +176,7 @@
 
   if range_.values != none and range_.depends-on == none {
     let shapes_
-    (shapes_, _, desc-y) = draw-values(config, range_.values, desc-x, desc-y)
+    (shapes_, _, desc-y) = draw-values(config, range_.values, txt-x, desc-y)
     shapes += shapes_
   }
 
@@ -266,7 +266,8 @@
   let width = rng.bits(range_) * bit-w
 
   shapes += draw-underbracket(config, start-x, start-x + width, bits-y)
-  let depend-range = struct.ranges.at(rng.key(..range_.depends-on))
+  let depend-key = rng.key(..range_.depends-on)
+  let depend-range = struct.ranges.at(depend-key)
   let prev-range-y = bits-y + bit-h * 1.5
 
   let prev-depend-y = if depend-range.last-value-y == -1 {
@@ -335,7 +336,9 @@
     shapes += shapes_
   }
 
-  return (shapes, desc-x, desc-y)
+  struct.ranges.at(depend-key) = depend-range
+
+  return (shapes, desc-x, desc-y, struct)
 }
 
 #let draw-structure(config, struct, structures, ox: 0, oy: 0) = {
@@ -413,7 +416,7 @@
   for range_ in ranges {
     if range_.values() != none and range_.depends-on != none {
       let shapes_
-      (shapes_, desc-x, desc-y) = draw-dependency(
+      (shapes_, desc-x, desc-y, struct) = draw-dependency(
         draw-structure, config,
         struct, structures, bits-x, bits-y, range_, desc-x, desc-y
       )
