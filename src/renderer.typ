@@ -463,8 +463,16 @@
       ox: ox,
       oy: config.margins.at(0)
     )
-    shapes
-    //draw.circle((300, -3000), fill: red, radius: 2)
+    // Workaround for margins
+    draw.group(name: "g", padding: config.margins, shapes)
+    draw.line(
+      "g.north-west",
+      "g.north-east",
+      "g.south-east",
+      "g.south-west",
+      stroke: none,
+      fill: none
+    )
   })
 }
 
