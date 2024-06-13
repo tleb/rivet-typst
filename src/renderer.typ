@@ -433,7 +433,7 @@
   return (shapes, desc-y)
 }
 
-#let render(config, structures) = {
+#let render(config, structures, width: 100%) = {
   set text(
     font: config.default-font-family,
     size: config.default-font-size
@@ -458,7 +458,7 @@
 
   set page(..params)
 
-  canvas(length: 1pt, background: config.background, {
+  let cnvs = canvas(length: 1pt, background: config.background, {
     let (shapes, _) = draw-structure(
       config, main, structures,
       ox: ox,
@@ -473,6 +473,32 @@
       "g.south-west",
       stroke: none,
       fill: none
+    )
+  })
+
+  layout(size => {
+    let m = measure(cnvs)
+    let w = m.width
+    let h = m.height
+    let base-w = if type(width) == ratio {
+      size.width * width
+    } else {
+      width
+    }
+    let r = if w == 0 {
+      0
+    } else {
+      base-w / w
+    }
+
+    let new-w = w * r
+    let new-h = h * r
+    r *= 100%
+
+    box(
+      width: new-w,
+      height: new-h,
+      scale(x: r, y: r, cnvs, reflow: true)
     )
   })
 }

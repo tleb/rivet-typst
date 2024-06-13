@@ -56,10 +56,10 @@
   return structures
 }
 
-#let render(structures, config: auto) = {
+#let render(structures, width: 100%, config: auto) = {
   if config == auto {
     config = conf.config()
   }
   let renderer_ = renderer.make(config)
-  (renderer_.render)(structures)
+  (renderer_.render)(structures, width: width)
 }
