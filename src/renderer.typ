@@ -356,14 +356,27 @@
   // Draw rectangle around structure
   shapes += draw-rect(border-col, bits-x, bits-y, bits-width, bit-h, thickness: 2)
 
+  let indices = range(struct.bits)
+  if not config.all-bit-i {
+    indices = ()
+    for r in struct.ranges.values() {
+      indices.push(r.start)
+      indices.push(r.end)
+    }
+  }
+
   for i in range(struct.bits) {
     let bit-x = ox + i * bit-w
-    shapes += draw-text(
-      str(struct.bits - i - 1 + start-bit),
-      txt-col,
-      bit-x + bit-w / 2,
-      oy + bit-h / 2 
-    )
+    let real-i = struct.bits - i - 1 + start-bit
+
+    if real-i in indices {
+      shapes += draw-text(
+        str(real-i),
+        txt-col,
+        bit-x + bit-w / 2,
+        oy + bit-h / 2 
+      )
+    }
 
     // Draw separator
     if i != 0 {
