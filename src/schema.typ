@@ -44,6 +44,8 @@
 #let load(path-or-schema) = {
   let schema = if type(path-or-schema) == str {
     parse-file(path-or-schema)
+  } else if type(path-or-schema) == dictionary {
+    path-or-schema
   } else {
     parse-raw(path-or-schema)
   }
