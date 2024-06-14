@@ -10,7 +10,7 @@
 
 /// Renders the given schema
 /// This functions
-/// - structures (dictionary): A schema dictionary, as returned by #doc-ref("schema.load")
+/// - schema (dictionary): A schema dictionary, as returned by #doc-ref("schema.load")
 /// - config (auto, dictionary): The configuration parameters, as returned by #doc-ref("config.config")
 /// - width (ratio, length): The width of the generated figure
-#let render(structures, config: auto, width: 100%) = {}
+#let render(schema, config: auto, width: 100%) = {}

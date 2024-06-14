@@ -122,6 +122,15 @@ structures:
         )
       )
     )
+  ),
+  colors: (
+    main: (
+      "31-28": red,
+      "11-4": green
+    ),
+    registerOffset: (
+      "11-4": rgb(240, 140, 80)
+    )
   )
 ))
 

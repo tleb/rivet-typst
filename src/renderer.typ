@@ -32,20 +32,12 @@
   if italic {
     text-params.insert("style", "italic")
   }
-  
-  let content-params = (:)
-  if fill != none {
-    content-params.insert("fill", fill)
-    content-params.insert("frame", "rect")
-    content-params.insert("padding", (4pt, 0pt))
-  }
 
   draw.content(
     (x, -y),
     text(txt, fill: color, size: size, ..text-params),
     anchor: anchor,
-    stroke: none,
-    ..content-params
+    stroke: none
   )
 }
 
@@ -253,7 +245,7 @@
 
 #let draw-dependency(
   draw-struct, config,
-  struct, structures, bits-x, bits-y, range_, desc-x, desc-y
+  struct, schema, bits-x, bits-y, range_, desc-x, desc-y
 ) = {
   let shapes = ()
 
@@ -301,7 +293,7 @@
     val-struct = structure.load("", val-struct)
 
     let shapes_
-    (shapes_, ..) = draw-struct(config, val-struct, structures, ox: depend-start-x, oy: desc-y)
+    (shapes_, ..) = draw-struct(config, val-struct, schema, ox: depend-start-x, oy: desc-y)
     shapes += shapes_
 
     let y = desc-y + bit-h * 1.5
@@ -332,7 +324,7 @@
     prev-range-y = prev-depend-y
     depend-range.last-value-y = prev-depend-y
 
-    (shapes_, desc-y) = draw-struct(config, structures.at(data.structure), structures, ox: start-x, oy: desc-y)
+    (shapes_, desc-y) = draw-struct(config, schema.structures.at(data.structure), schema, ox: start-x, oy: desc-y)
     shapes += shapes_
   }
 
@@ -341,8 +333,9 @@
   return (shapes, desc-x, desc-y, struct)
 }
 
-#let draw-structure(config, struct, structures, ox: 0, oy: 0) = {
+#let draw-structure(config, struct, schema, ox: 0, oy: 0) = {
   let shapes
+  let colors = schema.at("colors", default: (:))
   let bg-col = config.background
   let txt-col = config.text-color
   let border-col = config.border-color
@@ -352,6 +345,30 @@
   let (bits-x, bits-y) = (ox, oy + bit-h)
   let bits-width = struct.bits * bit-w
   let start-bit = struct.start
+  let bit-colors = (:)
+  for i in range(struct.bits) {
+    bit-colors.insert(str(i), bg-col)
+  }
+  if struct.name in colors {
+    for (s, col) in colors.at(struct.name) {
+      let (start, end) = rng.parse-span(s)
+      for i in range(start, end + 1) {
+        let real-i = struct.bits - i - 1 + start-bit
+        bit-colors.insert(str(real-i), col)
+      }
+    }
+  }
+  let range-boundaries = ()
+  for r in struct.ranges.values() {
+    let i = struct.bits - r.end - 1 + start-bit
+    range-boundaries.push(i)
+  }
+
+  // Draw colors
+  for i in range(struct.bits) {
+    let bit-x = ox + i * bit-w
+    shapes += draw-rect(bit-colors.at(str(i)), bit-x, bits-y, bit-w+1, bit-h)
+  }
 
   // Draw rectangle around structure
   shapes += draw-rect(border-col, bits-x, bits-y, bits-width, bit-h, thickness: 2)
@@ -379,8 +396,9 @@
     }
 
     // Draw separator
-    if i != 0 {
-      shapes += draw-line(border-col, (bit-x, bits-y), (bit-x, bits-y + bit-h))
+    if i != 0 and not i in range-boundaries {
+      shapes += draw-line(border-col, (bit-x, bits-y), (bit-x, bits-y + bit-h * 0.2))
+      shapes += draw-line(border-col, (bit-x, bits-y + bit-h * 0.8), (bit-x, bits-y + bit-h))
     }
   }
 
@@ -413,13 +431,7 @@
     let name-x = start-x + width / 2
     let name-y = bits-y + bit-h / 2
     
-    shapes += draw-rect(
-      bg-col,
-      start-x + bit-w / 2,
-      name-y - bit-h * 0.3,
-      width - bit-w,
-      bit-h * 0.6
-    )
+    shapes += draw-line(border-col, (start-x, bits-y), (start-x, bits-y + bit-h))
     shapes += draw-text(range_.name, txt-col, name-x, name-y, fill: bg-col)
     
     if range_.description != "" {
@@ -437,7 +449,7 @@
       let shapes_
       (shapes_, desc-x, desc-y, struct) = draw-dependency(
         draw-structure, config,
-        struct, structures, bits-x, bits-y, range_, desc-x, desc-y
+        struct, schema, bits-x, bits-y, range_, desc-x, desc-y,
       )
       shapes += shapes_
     }
@@ -446,13 +458,13 @@
   return (shapes, desc-y)
 }
 
-#let render(config, structures, width: 100%) = {
+#let render(config, schema, width: 100%) = {
   set text(
     font: config.default-font-family,
     size: config.default-font-size
   )
 
-  let main = structures.main
+  let main = schema.structures.main
   let ox = config.margins.at(3)
   if config.left-labels {
     ox = config.width - ox - main.bits * config.bit-width
@@ -473,7 +485,7 @@
 
   let cnvs = canvas(length: 1pt, background: config.background, {
     let (shapes, _) = draw-structure(
-      config, main, structures,
+      config, main, schema,
       ox: ox,
       oy: config.margins.at(0)
     )

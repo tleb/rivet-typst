@@ -55,13 +55,16 @@
     id = str(id)
     structures.insert(id, structure.load(id, data))
   }
-  return structures
+  return (
+    structures: structures,
+    colors: schema.at("colors", default: (:))
+  )
 }
 
-#let render(structures, width: 100%, config: auto) = {
+#let render(schema, width: 100%, config: auto) = {
   if config == auto {
     config = conf.config()
   }
   let renderer_ = renderer.make(config)
-  (renderer_.render)(structures, width: width)
+  (renderer_.render)(schema, width: width)
 }
