@@ -489,31 +489,35 @@
     )
   })
 
-  layout(size => {
-    let m = measure(cnvs)
-    let w = m.width
-    let h = m.height
-    let base-w = if type(width) == ratio {
-      size.width * width
-    } else {
-      width
-    }
-    let r = if w == 0 {
-      0
-    } else {
-      base-w / w
-    }
+  if config.full-page {
+    cnvs
+  } else {
+    layout(size => {
+      let m = measure(cnvs)
+      let w = m.width
+      let h = m.height
+      let base-w = if type(width) == ratio {
+        size.width * width
+      } else {
+        width
+      }
+      let r = if w == 0 {
+        0
+      } else {
+        base-w / w
+      }
 
-    let new-w = w * r
-    let new-h = h * r
-    r *= 100%
+      let new-w = w * r
+      let new-h = h * r
+      r *= 100%
 
-    box(
-      width: new-w,
-      height: new-h,
-      scale(x: r, y: r, cnvs, reflow: true)
-    )
-  })
+      box(
+        width: new-w,
+        height: new-h,
+        scale(x: r, y: r, cnvs, reflow: true)
+      )
+    })
+  }
 }
 
 #let make(config) = {
