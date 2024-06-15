@@ -1,10 +1,11 @@
 # Changelog
 
-## [v0.0.2] - _WIP_
+## [v0.0.2] - 2024-06-15
 ### Added
 - `width` parameter to `schema.render` for easier integration
 - `all-bit-i` config option
 - colored ranges
+- format specification in the manual
 
 ## [v0.0.1] - 2024-05-19
 - initial version
