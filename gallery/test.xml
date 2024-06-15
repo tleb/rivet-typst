@@ -65,4 +65,7 @@
             <description>offset register</description>
         </range>
     </structure>
+    <color structure="main" color="#FF0000" start="28" end="31" />
+    <color structure="main" color="#255961" start="4" end="11" />
+    <color structure="immediateOffset" color="89,97,37" start="4" end="11" />
 </schema>

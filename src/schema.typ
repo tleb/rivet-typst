@@ -50,6 +50,28 @@
     parse-raw(path-or-schema)
   }
 
+  if "colors" in schema {
+    for struct in schema.colors.keys() {
+      for (span, col) in schema.colors.at(struct) {
+        if type(col) == str {
+          if col.starts-with("#") {
+            col = rgb(col)
+          } else {
+            let (r, g, b) = col.split(",").map(v => int(v))
+            col = rgb(r, g, b)
+          }
+        } else if type(col) == array {
+          col = rgb(..col)
+        } else if type(col) != color {
+          panic("Invalid color format")
+        }
+        schema.colors.at(struct).at(span) = col
+      }
+    }
+  } else {
+    schema.insert("colors", (:))
+  }
+
   let structures = (:)
   for (id, data) in schema.structures {
     id = str(id)
