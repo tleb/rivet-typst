@@ -71,3 +71,11 @@ structures:
       3-0:
         name: Rm
         description: offset register
+
+colors:
+  main:
+    31-28: "#3EFA6B"
+    25-23:
+      - 100
+      - 150
+      - 200

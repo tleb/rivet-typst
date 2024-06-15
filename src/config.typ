@@ -22,7 +22,8 @@
   left-labels: false,
   width: 1200,
   height: 800,
-  full-page: false
+  full-page: false,
+  all-bit-i: true
 ) = {
   return (
     default-font-family: default-font-family,
@@ -48,7 +49,8 @@
     left-labels: left-labels,
     width: width,
     height: height,
-    full-page: full-page
+    full-page: full-page,
+    all-bit-i: all-bit-i
   )
 }
 

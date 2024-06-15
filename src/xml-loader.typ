@@ -83,8 +83,10 @@
 
 #let parse(content) = {
   let struct-elmts = content.children.filter(e => "tag" in e and e.tag == "structure")
+  let color-elmts = content.children.filter(e => "tag" in e and e.tag == "color")
 
   let structures = (:)
+  let colors = (:)
 
   for struct-elmt in struct-elmts {
     structures.insert(
@@ -93,8 +95,19 @@
     )
   }
 
+  for color-elmt in color-elmts {
+    let struct = color-elmt.attrs.structure
+    if not struct in colors {
+      colors.insert(struct, (:))
+    }
+
+    let span = color-elmt.attrs.end + "-" + color-elmt.attrs.start
+    colors.at(struct).insert(span, color-elmt.attrs.color)
+  }
+
   return (
-    structures: structures
+    structures: structures,
+    colors: colors
   )
 }
 

@@ -44,8 +44,32 @@
 #let load(path-or-schema) = {
   let schema = if type(path-or-schema) == str {
     parse-file(path-or-schema)
+  } else if type(path-or-schema) == dictionary {
+    path-or-schema
   } else {
     parse-raw(path-or-schema)
+  }
+
+  if "colors" in schema {
+    for struct in schema.colors.keys() {
+      for (span, col) in schema.colors.at(struct) {
+        if type(col) == str {
+          if col.starts-with("#") {
+            col = rgb(col)
+          } else {
+            let (r, g, b) = col.split(",").map(v => int(v))
+            col = rgb(r, g, b)
+          }
+        } else if type(col) == array {
+          col = rgb(..col)
+        } else if type(col) != color {
+          panic("Invalid color format")
+        }
+        schema.colors.at(struct).at(span) = col
+      }
+    }
+  } else {
+    schema.insert("colors", (:))
   }
 
   let structures = (:)
@@ -53,13 +77,16 @@
     id = str(id)
     structures.insert(id, structure.load(id, data))
   }
-  return structures
+  return (
+    structures: structures,
+    colors: schema.at("colors", default: (:))
+  )
 }
 
-#let render(structures, config: auto) = {
+#let render(schema, width: 100%, config: auto) = {
   if config == auto {
     config = conf.config()
   }
   let renderer_ = renderer.make(config)
-  (renderer_.render)(structures)
+  (renderer_.render)(schema, width: width)
 }
