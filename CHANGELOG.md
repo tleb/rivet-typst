@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.1.0] - 2024-10-02
+- prepared for publication in Typst Universe
+
 ## [v0.0.2] - 2024-06-15
 ### Added
 - `width` parameter to `schema.render` for easier integration
