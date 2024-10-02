@@ -31,14 +31,11 @@ It is based on the [homonymous Python script](https://git.kb28.ch/HEL/rivet/)
 *Click on the example image to jump to the code.*
 
 ## Usage
-For information, see the [manual](manual.pdf)
+For more information, see the [manual](manual.pdf)
 
-To use this package, simply import `schema` [src/lib.typ](src/lib.typ) and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
+To use this package, simply import `schema` from [rivet](https://typst.app/universe/package/rivet) and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
 ```typ
-#import "src/lib.typ": schema
+#import "@preview/rivet:0.1.0": schema
 #let doc = schema.load("path/to/schema.yaml")
 #schema.render(doc)
 ```
-
-## Installing
-> TODO
