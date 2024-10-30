@@ -16,7 +16,7 @@ cnt="$#"
 i=1
 for f
 do
-    f2="${f/typ/png}"
+    f2="${f%.typ}.png"
     echo "($i/$cnt) $f -> $f2"
     typst c --root ./ "$f" "$f2"
     i=$((i+1))
@@ -27,12 +27,12 @@ then
     echo
     echo "Generating gallery PDFs"
 
-    set -- ./gallery/*.typ
-    cnt="$#"
+    files=$(find ./gallery -type f -name "*.typ")
+    cnt=$(echo "$files" | wc -l)
     i=1
-    for f
+    for f in $files
     do
-        f2="${f/typ/pdf}"
+        f2="${f%.typ}.pdf"
         echo "($i/$cnt) $f -> $f2"
         typst c --root ./ "$f" "$f2"
         i=$((i+1))
