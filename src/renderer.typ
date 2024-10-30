@@ -373,7 +373,7 @@
   // Draw rectangle around structure
   shapes += draw-rect(border-col, bits-x, bits-y, bits-width, bit-h, thickness: 2)
 
-  let indices = range(struct.bits)
+  let indices = range(struct.start, struct.start + struct.bits)
   if not config.all-bit-i {
     indices = ()
     for r in struct.ranges.values() {
