@@ -11,4 +11,4 @@ categories = [ "visualization" ]
 license = "Apache-2.0"
 description = "Register / Instruction Visualizer & Explainer Tool with Typst, using CeTZ"
 keywords = [ "assembly", "instruction", "binary" ]
-exclude = [ "gallery", "gallery.bash", "docs" ]
+exclude = [ "gallery", "justfile", "docs" ]

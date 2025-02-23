@@ -13,7 +13,7 @@
       box(
         stroke: black + 1pt,
         radius: .5em,
-        fill: if fill {yellow.lighten(80%)} else {none},
+        fill: if fill {orange.lighten(95%)} else {none},
         if show-src {
           let src-block = align(left, raw(src, lang: "typc"))
           table(

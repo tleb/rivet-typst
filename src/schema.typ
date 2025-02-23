@@ -25,7 +25,7 @@
 
 #let parse-raw(schema) = {
   let lang = schema.lang
-  let content = schema.text
+  let content = bytes(schema.text)
   if not lang in valid-extensions {
     let fmts = valid-extensions.join(", ")
     fmts = "(" + fmts + ")"
@@ -33,11 +33,11 @@
   }
 
   if lang == "yaml" {
-    return yaml.decode(content)
+    return yaml(content)
   } else if lang == "json" {
-    return json.decode(content)
+    return json(content)
   } else if lang == "xml" {
-    return xml-loader.parse(xml.decode(content).first())
+    return xml-loader.parse(xml(content).first())
   }
 }
 
