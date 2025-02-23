@@ -1,22 +1,24 @@
-#import "@preview/tidy:0.3.0"
-#import "@preview/codelst:2.0.1": sourcecode
-#import "@preview/showybox:2.0.1": showybox
+#import "@preview/tidy:0.4.1"
+#import "@preview/codly:1.2.0": codly-init, codly
+#import "@preview/codly-languages:0.1.7": codly-languages
+#import "@preview/showybox:2.0.4": showybox
 #import "src/lib.typ"
 #import "src/schema.typ"
 #import "docs/examples.typ"
 
+#show: codly-init
+
+#codly(languages: codly-languages)
+
 #set heading(numbering: (..num) => if num.pos().len() < 4 {
   numbering("1.1", ..num)
 })
-#{
-  outline(indent: true, depth: 3)
-}
 
 #set page(numbering: "1/1", header: align(right)[rivet #sym.dash.em v#lib.version])
 
 #let doc-ref(target, full: false, var: false) = {
   let (module, func) = target.split(".")
-  let label-name = module + func
+  let label-name = module + "-" + func
   let display-name = func
   if full {
     display-name = target
@@ -25,7 +27,7 @@
     label-name += "()"
     display-name += "()"
   }
-  link(label(label-name))[#display-name]
+  link(label(label-name), raw(display-name))
 }
 
 #let note(it) = showybox(
@@ -42,6 +44,37 @@
 )
 
 #show link: set text(blue)
+
+#let sch = schema.load(```yaml
+structures:
+  main:
+    bits: 5
+    ranges:
+      4:
+        name: R
+        description: Register
+      3:
+        name: I
+        description: Instruction
+      2:
+        name: V
+        description: Visualizer
+      1:
+        name: E
+        description: Explainer
+      0:
+        name: T
+        description: Tool
+```)
+#align(center, schema.render(sch, width: 50%, config: lib.config.config(left-labels: true)))
+#v(1fr)
+#box(
+  width: 100%,
+  stroke: black,
+  inset: 1em,
+  outline(indent: auto, depth: 3)
+)
+#pagebreak(weak: true)
 
 = Introduction
 
@@ -70,7 +103,7 @@ A schema contains a dictionary of structures. The must be at least one defined s
 
 It can also optionnaly contain a "colors" dictionary. More details about this in #link(<format-colors>)[Colors]
 
-#sourcecode[```json
+```json
 {
   "structures": {
     "main": {
@@ -85,7 +118,7 @@ It can also optionnaly contain a "colors" dictionary. More details about this in
     ...
   }
 }
-```]
+```
 
 #pagebreak(weak: true)
 
@@ -95,7 +128,7 @@ A structure has a given number of bits and one or multiple ranges. Each range of
 
 The range name (or key) defines the left- and rightmost bits (e.g. `7-4` goes from bit 7 down to bit 4). Bits are displayed in big-endian, i.e. the leftmost bit has the highest value.
 
-#sourcecode[```json
+```json
 "main": {
   "bits": 8,
   "ranges": {
@@ -113,7 +146,7 @@ The range name (or key) defines the left- and rightmost bits (e.g. `7-4` goes fr
     }
   }
 }
-```]
+```
 
 == Range <format-range>
 
@@ -125,7 +158,7 @@ For values depending on other ranges, see #link(<format-dependencies>)[Dependenc
   In YAML, make sure to wrap values in quotes because some values can be interpreted as octal notation (e.g. 010 #sym.arrow.r 8)
 ]
 
-#sourcecode[```json
+```json
 "3-2": {
   "name": "op",
   "description": "Logical operation",
@@ -136,7 +169,7 @@ For values depending on other ranges, see #link(<format-dependencies>)[Dependenc
     "11": "NAND"
   }
 }
-```]
+```
 
 #pagebreak(weak: true)
 
@@ -146,7 +179,7 @@ The structure of one range may depend on the value of another. To represent this
 
 Then, in its values, indicate which structure to use. A description can also be added (displayed above the horizontal dependency arrow)
 
-#sourcecode[```json
+```json
 "7-4": {
   ...
   "depends-on": "0",
@@ -161,11 +194,11 @@ Then, in its values, indicate which structure to use. A description can also be 
     }
   }
 }
-```]
+```
 
 Finally, add the sub-structures to the structure dictionary:
 
-#sourcecode[```json
+```json
 {
   "structures": {
     "main": {
@@ -182,7 +215,7 @@ Finally, add the sub-structures to the structure dictionary:
     ...
   }
 }
-```]
+```
 
 #pagebreak(weak: true)
 
@@ -190,7 +223,7 @@ Finally, add the sub-structures to the structure dictionary:
 
 You may want to highlight some ranges to make your diagram more readable. For this, you can use colors. Colors may be defined in a separate dictionary, at the same level as the "structures" dictionary:
 
-#sourcecode[```json
+```json
 {
   "structures": {
     ...
@@ -199,11 +232,11 @@ You may want to highlight some ranges to make your diagram more readable. For th
     ...
   }
 }
-```]
+```
 
 It can contain color definitions for any number of ranges. For each range, you may then define a dictionary mapping bit ranges to a particular color:
 
-#sourcecode[```json
+```json
 "colors": {
   "main": {
     "31-28": "#ABCDEF",
@@ -213,7 +246,7 @@ It can contain color definitions for any number of ranges. For each range, you m
     "19-10": [12, 34, 56]
   }
 }
-```]
+```
 
 Valid color formats are:
 - hex string starting with `#`, e.g. `"#23fa78"`
@@ -223,7 +256,7 @@ Valid color formats are:
 
 #note[
   The XML format implements colors a bit differently. Instead of having a "colors" dictionary, color definitions are directly put on the same level as structure definitions. For this, you can use a `color` node with the attributes "structure", "color", "start" and "end", like so:
-  #sourcecode[```xml
+  ```xml
   <schema>
     <structure id="main" bits="8">
       ...
@@ -232,7 +265,7 @@ Valid color formats are:
     <color structure="main" color="#FF0000" start="4" end="7" />
     <color structure="main" color="255,0,0" start="0" end="3" />
   </schema>
-  ```]
+  ```
 ]
 
 #pagebreak(weak: true)
@@ -254,6 +287,7 @@ Aside from the default config, some example presets are also provided:
 #let doc-config = tidy.parse-module(
   read("docs/config.typ"),
   name: "config",
+  old-syntax: true,
   scope: (
     doc-ref: doc-ref
   )
@@ -265,6 +299,7 @@ Aside from the default config, some example presets are also provided:
 #let doc-schema = tidy.parse-module(
   read("docs/schema.typ"),
   name: "schema",
+  old-syntax: true,
   scope: (
     schema: schema,
     doc-ref: doc-ref

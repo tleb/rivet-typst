@@ -1,7 +1,7 @@
 /// Creates a dictionary of all configuration parameters
 ///
 /// - default-font-family (str): The default font family
-/// - default font-size (length): The absolute default font size
+/// - default-font-size (length): The absolute default font size
 /// - italic-font-family (str): The italic font family (for value descriptions)
 /// - italic-font-size (length): The absolute italic font size
 /// - background (color): The diagram background color
@@ -15,7 +15,7 @@
 /// - dash-length (float): The length of individual dashes (for dashed lines)
 /// - dash-space (float): The space between two dashes (for dashed lines)
 /// - arrow-size (float): The size of arrow heads
-/// - margins (tuple[float]): TODO -> remove
+/// - margins (tuple): TODO -> remove
 /// - arrow-margin (float): The margin between arrows and the structures they link
 /// - values-gap (float): The gap between individual values
 /// - arrow-label-distance (float): The distance between arrows and their labels
@@ -55,9 +55,9 @@
 ) = {}
 
 /// Dark theme config
-/// - ..args (any): see #doc-ref("config.config")
+/// - ..args (any): see @@config()
 #let dark(..args) = {}
 
 /// Blueprint theme config
-/// - ..args (any): see #doc-ref("config.config")
+/// - ..args (any): see @@config()
 #let blueprint(..args) = {}

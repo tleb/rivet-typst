@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.0] - 2025-02-23
+- updated CeTZ to 0.3.2
+- updated to Typst 0.13.0
+- fixed missing bit index on dependencies
+- updated docs (Tidy, codelst -> codly)
+
 ## [v0.1.0] - 2024-10-02
 - prepared for publication in Typst Universe
 
