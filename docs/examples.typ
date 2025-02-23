@@ -1,4 +1,3 @@
-#import "@preview/cetz:0.3.1": draw
 #import "../src/lib.typ": schema
 #import "../src/util.typ"
 
