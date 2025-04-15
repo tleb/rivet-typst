@@ -84,22 +84,26 @@ This is a port of the #link("https://git.kb28.ch/HEL/rivet")[homonymous Python s
 
 = Usage
 
-Simply import `schema` from #link("src/lib.typ") and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
-#pad(left: 1em)[```typ
-#import "@preview/rivet:0.1.0": schema
-#let doc = schema.load("path/to/schema.yaml")
+#let import-stmt = "#import \"@preview/rivet:" + str(lib.version) + "\""
+
+Simply import the `schema` module and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
+#raw(block: true, lang: "typ", ```typ
+$import: schema
+#let doc = schema.load(yaml("path/to/schema.yaml"))
 #schema.render(doc)
-```]
+```.text.replace("$import", import-stmt))
+
+Please read the #link(<loading>)[Loading] chapter for more detailed explanations on how to load schema descriptions.
 
 = Format
 
 This section describes the structure of a schema definition. The examples given use the JSON syntax. For examples in different formats, see #link("https://git.kb28.ch/HEL/rivet-typst/src/branch/main/gallery/test.yaml")[test.yaml], #link("https://git.kb28.ch/HEL/rivet-typst/src/branch/main/gallery/test.json")[test.json] and #link("https://git.kb28.ch/HEL/rivet-typst/src/branch/main/gallery/test.xml")[test.xml]. You can also directly define a schema using Typst dictionaries and arrays.
 
-Since the XML format is quite different from the other, you might find it helpful to look at the examples on GitHub to get familiar with it.
+Since the XML format is quite different from the other, you might find it helpful to look at the examples in the #link("https://git.kb28.ch/HEL/rivet-typst/src/branch/main/gallery/")[Gitea repo] to get familiar with it.
 
 == Main layout
 
-A schema contains a dictionary of structures. The must be at least one defined structure named "main".
+A schema contains a dictionary of structures. There must be at least one defined structure named "main".
 
 It can also optionnaly contain a "colors" dictionary. More details about this in #link(<format-colors>)[Colors]
 
@@ -177,7 +181,7 @@ For values depending on other ranges, see #link(<format-dependencies>)[Dependenc
 
 The structure of one range may depend on the value of another. To represent this situation, first indicate on the child range the range on which it depends.
 
-Then, in its values, indicate which structure to use. A description can also be added (displayed above the horizontal dependency arrow)
+Then, in its values, indicate which structure to use. A description can also be added (displayed below the horizontal dependency arrow)
 
 ```json
 "7-4": {
@@ -267,6 +271,81 @@ Valid color formats are:
   </schema>
   ```
 ]
+
+#pagebreak(weak: true)
+
+= Loading <loading>
+
+Due to current limitations of the Typst compiler, the package can only access its own files, unless directly included in your project. For this reason, rivet cannot load a schema from a path, and you will need to read the files yourself to pass their contents to the package.
+
+Here are a number of ways you can load your schemas:
+
+== JSON Format
+
+````typ
+// From file (ONLY IF PACKAGE INSTALLED IN PROJECT)
+#let s = schema.load("schema.json")
+// From file
+#let s = schema.load(json("schema.json"))
+// Raw block
+#let s = schema.load(```json
+{
+  "structures": {
+    "main": {
+      ...
+    }
+  }
+}
+```)
+````
+
+== YAML Format
+
+````typ
+// From file (ONLY IF PACKAGE INSTALLED IN PROJECT)
+#let s = schema.load("schema.yaml")
+// From file
+#let s = schema.load(yaml("schema.yaml"))
+// Raw block
+#let s = schema.load(```yaml
+structures:
+  main:
+    ...
+```)
+````
+
+== Typst Format
+
+```typ
+#let s = schema.load((
+  structures: (
+    main: (
+      ...
+    )
+  )
+))
+```
+
+#pagebreak(weak: true)
+
+== XML Format
+
+````typ
+// From file (ONLY IF PACKAGE INSTALLED IN PROJECT)
+#let x = schema.xml-loader.load("schema.xml")
+#let s = schema.load(x)
+// From file
+#let x = schema.xml-loader.parse(yaml("schema.yaml").first())
+#let s = schema.load(x)
+// Raw block
+#let s = schema.load(```xml
+<schema>
+  <structure id="main" bits="32">
+    ...
+  </structure>
+</schema>
+```)
+````
 
 #pagebreak(weak: true)
 

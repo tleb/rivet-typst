@@ -1,5 +1,6 @@
 /// Loads a schema from a file or a raw block.
-/// This function returns a dictionary of structures
+/// This function returns a dictionary of structures\
+/// See the #link(<loading>)[Loading] chapter for examples of schema loading for each supported format
 /// 
 /// Supported formats: #schema.valid-extensions.map(e => raw("." + e)).join(", ")
 /// - path-or-schema (str, raw, dictionary):
@@ -12,7 +13,6 @@
 #let load(path-or-schema) = {}
 
 /// Renders the given schema
-/// This functions
 /// - schema (dictionary): A schema dictionary, as returned by @@load()
 /// - config (auto, dictionary): The configuration parameters, as returned by #doc-ref("config.config")
 /// - width (ratio, length): The width of the generated figure
