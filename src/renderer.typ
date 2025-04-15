@@ -1,4 +1,4 @@
-#import "@preview/cetz:0.3.2": canvas, draw
+#import "@preview/cetz:0.3.4": canvas, draw
 
 #import "range.typ" as rng
 #import "structure.typ"
@@ -253,7 +253,15 @@
   let bit-h = config.bit-height
   let arrow-margin = config.arrow-margin
 
-  let start-i = struct.bits - range_.end - 1
+  let to-real-i(i) = {
+    return if config.ltr-bits {
+      i
+    } else {
+      struct.bits - i - 1
+    }
+  }
+
+  let start-i = to-real-i(if config.ltr-bits {range_.start} else {range_.end})
   let start-x = bits-x + start-i * bit-w
   let width = rng.bits(range_) * bit-w
 
@@ -268,7 +276,7 @@
     depend-range.last-value-y
   }
 
-  let depend-start-i = struct.bits - depend-range.end - 1
+  let depend-start-i = to-real-i(depend-range.end)
   let depend-start-x = bits-x + depend-start-i * bit-w
   let depend-width = rng.bits(depend-range) * bit-w
   let depend-mid = depend-start-x + depend-width / 2
@@ -302,7 +310,9 @@
     let x2
 
     // Arrow from left to right
-    if depend-range.end > range_.start {
+    let i1 = to-real-i(range_.start)
+    let i2 = to-real-i(depend-range.end)
+    if i2 < i1 {
       x1 = depend-start-x + depend-width + arrow-margin
       x2 = start-x - arrow-margin
     
@@ -346,6 +356,23 @@
   let bits-width = struct.bits * bit-w
   let start-bit = struct.start
   let bit-colors = (:)
+
+  let to-real-i(i) = {
+    return if config.ltr-bits {
+      i - start-bit
+    } else {
+      struct.bits - i - 1 + start-bit
+    }
+  }
+
+  let to-bit-i(real-i) = {
+    return if config.ltr-bits {
+      real-i + start-bit
+    } else {
+      struct.bits - real-i - 1 + start-bit
+    }
+  }
+
   for i in range(struct.bits) {
     bit-colors.insert(str(i), bg-col)
   }
@@ -353,14 +380,14 @@
     for (s, col) in colors.at(struct.name) {
       let (start, end) = rng.parse-span(s)
       for i in range(start, end + 1) {
-        let real-i = struct.bits - i - 1 + start-bit
+        let real-i = to-real-i(i)
         bit-colors.insert(str(real-i), col)
       }
     }
   }
   let range-boundaries = ()
   for r in struct.ranges.values() {
-    let i = struct.bits - r.end - 1 + start-bit
+    let i = to-real-i(if config.ltr-bits {r.start} else {r.end})
     range-boundaries.push(i)
   }
 
@@ -384,11 +411,11 @@
 
   for i in range(struct.bits) {
     let bit-x = ox + i * bit-w
-    let real-i = struct.bits - i - 1 + start-bit
+    let bit-i = to-bit-i(i)
 
-    if real-i in indices {
+    if bit-i in indices {
       shapes += draw-text(
-        str(real-i),
+        str(bit-i),
         txt-col,
         bit-x + bit-w / 2,
         oy + bit-h / 2 
@@ -403,13 +430,16 @@
   }
 
   let ranges = structure.get-sorted-ranges(struct)
+  if config.ltr-bits {
+    ranges = ranges.rev()
+  }
   if config.left-labels {
     ranges = ranges.rev()
   }
 
   let desc-x
   if config.force-descs-on-side {
-    desc-x = config.margins.at(3) + structures.main.bits * bit-w
+    desc-x = config.margins.at(3) + schema.structures.main.bits * bit-w
     if config.left-labels {
       desc-x = config.width - desc-x
     }
@@ -424,14 +454,15 @@
 
   // Names + simple descriptions
   for range_ in ranges {
-    let start-i = struct.bits - range_.end + start-bit - 1
+    let start-i = to-real-i(if config.ltr-bits {range_.start} else {range_.end})
     let start-x = bits-x + start-i * bit-w
     let width = rng.bits(range_) * bit-w
 
     let name-x = start-x + width / 2
     let name-y = bits-y + bit-h / 2
-    
-    shapes += draw-line(border-col, (start-x, bits-y), (start-x, bits-y + bit-h))
+
+    let line-x = if config.ltr-bits {start-x + width} else {start-x}
+    shapes += draw-line(border-col, (line-x, bits-y), (line-x, bits-y + bit-h))
     shapes += draw-text(range_.name, txt-col, name-x, name-y, fill: bg-col)
     
     if range_.description != "" {

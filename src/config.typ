@@ -23,7 +23,8 @@
   width: 1200,
   height: 800,
   full-page: false,
-  all-bit-i: true
+  all-bit-i: true,
+  ltr-bits: false,
 ) = {
   return (
     default-font-family: default-font-family,
@@ -50,7 +51,8 @@
     width: width,
     height: height,
     full-page: full-page,
-    all-bit-i: all-bit-i
+    all-bit-i: all-bit-i,
+    ltr-bits: ltr-bits,
   )
 }
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.3.0] - WIP
+- updated CeTZ to 0.3.4
+- updated to Typst 0.13.1
+- updated Tidy to 0.4.2
+- updated Codly to 1.3.0 and codly-languages to 0.1.8
+- added `ltr-bits` config option
+- added a "Loading" section to the manual
+
 ## [v0.2.0] - 2025-02-23
 - updated CeTZ to 0.3.2
 - updated to Typst 0.13.0

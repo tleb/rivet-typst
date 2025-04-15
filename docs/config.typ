@@ -25,6 +25,7 @@
 /// - height (float): TODO -> remove
 /// - full-page (bool): If true, the page will be resized to fit the diagram and take the background color
 /// - all-bit-i (bool): If true, all bit indices will be rendered, otherwise, only the ends of each range will be displayed
+/// - ltr-bits (bool): If true, bits are placed with the LSB on the left instead of the right
 /// -> dictionary
 #let config(
   default-font-family: "Ubuntu Mono",
@@ -51,7 +52,8 @@
   width: 1200,
   height: 800,
   full-page: false,
-  all-bit-i: true
+  all-bit-i: true,
+  ltr-bits: false
 ) = {}
 
 /// Dark theme config
