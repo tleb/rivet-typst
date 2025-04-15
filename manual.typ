@@ -1,6 +1,6 @@
-#import "@preview/tidy:0.4.1"
-#import "@preview/codly:1.2.0": codly-init, codly
-#import "@preview/codly-languages:0.1.7": codly-languages
+#import "@preview/tidy:0.4.2"
+#import "@preview/codly:1.3.0": codly-init, codly
+#import "@preview/codly-languages:0.1.8": codly-languages
 #import "@preview/showybox:2.0.4": showybox
 #import "src/lib.typ"
 #import "src/schema.typ"
@@ -126,7 +126,7 @@ It can also optionnaly contain a "colors" dictionary. More details about this in
 
 A structure has a given number of bits and one or multiple ranges. Each range of bits can have a name, a description and / or values with special meaning (see #link(<format-range>)[Range]). A range's structure can also depend on another range's value (see #link(<format-dependencies>)[Dependencies]).
 
-The range name (or key) defines the left- and rightmost bits (e.g. `7-4` goes from bit 7 down to bit 4). Bits are displayed in big-endian, i.e. the leftmost bit has the highest value.
+The range name (or key) defines the left- and rightmost bits (e.g. `7-4` goes from bit 7 down to bit 4). The order in which you write the range is not important, meaning `7-4` is equivalent to `4-7`. Bits are displayed in big-endian, i.e. the leftmost bit has the highest value, except if you enable the `ltr-bits` #doc-ref("config.config") option.
 
 ```json
 "main": {
