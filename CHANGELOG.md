@@ -1,6 +1,6 @@
 # Changelog
 
-## [v0.3.0] - WIP
+## [v0.3.0] - 2025-05-03
 - updated CeTZ to 0.3.4
 - updated to Typst 0.13.1
 - updated Tidy to 0.4.2
