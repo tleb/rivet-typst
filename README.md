@@ -35,7 +35,7 @@ For more information, see the [manual](manual.pdf)
 
 To use this package, simply import `schema` from [rivet](https://typst.app/universe/package/rivet) and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
 ```typ
-#import "@preview/rivet:0.2.0": schema
+#import "@preview/rivet:0.3.0": schema
 #let doc = schema.load("path/to/schema.yaml")
 #schema.render(doc)
 ```

@@ -1,7 +1,7 @@
 [package]
 name = "rivet"
-version = "0.2.0"
-compiler = "0.13.0"
+version = "0.3.0"
+compiler = "0.13.1"
 repository = "https://git.kb28.ch/HEL/rivet-typst"
 entrypoint = "src/lib.typ"
 authors = [

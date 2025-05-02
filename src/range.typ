@@ -15,6 +15,9 @@
   }
   let start = int(start-end.last())
   let end = int(start-end.first())
+  if end < start {
+    (start, end) = (end, start)
+  }
   return (start, end)
 }
 
