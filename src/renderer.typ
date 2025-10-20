@@ -407,6 +407,11 @@
       indices.push(r.start)
       indices.push(r.end)
     }
+    // ensure first and last bits are included
+    if not indices.contains(0) { indices.insert(0, struct.start) }
+    if not indices.contains(struct.bits + struct.start - 1) {
+      indices.push(struct.bits + struct.start - 1)
+    }
   }
 
   for i in range(struct.bits) {
