@@ -407,6 +407,11 @@
       indices.push(r.start)
       indices.push(r.end)
     }
+    // ensure first and last bits are included
+    if not indices.contains(0) { indices.insert(0, struct.start) }
+    if not indices.contains(struct.bits + struct.start - 1) {
+      indices.push(struct.bits + struct.start - 1)
+    }
   }
 
   for i in range(struct.bits) {
@@ -453,8 +458,9 @@
   let desc-y = bits-y + bit-h * 2
 
   // Names + simple descriptions
-  for range_ in ranges {
+  for (i, range_) in ranges.enumerate() {
     let start-i = to-real-i(if config.ltr-bits {range_.start} else {range_.end})
+    let end-i = to-real-i(if config.ltr-bits {range_.end} else {range_.start})
     let start-x = bits-x + start-i * bit-w
     let width = rng.bits(range_) * bit-w
 
@@ -464,6 +470,28 @@
     let line-x = if config.ltr-bits {start-x + width} else {start-x}
     shapes += draw-line(border-col, (line-x, bits-y), (line-x, bits-y + bit-h))
     shapes += draw-text(range_.name, txt-col, name-x, name-y, fill: bg-col)
+
+    // paint end line only if needed
+    if (
+      start-i != 0
+        and end-i != struct.bits - 1
+        and ranges
+          .at(
+            i
+              + {
+                if config.ltr-bits and i < ranges.len() - 1 { 1 } else { -1 }
+              },
+          )
+          .end
+          != range_.start - 1
+    ) {
+      line-x += if config.ltr-bits { -width } else { width }
+      shapes += draw-line(
+        border-col,
+        (line-x, bits-y),
+        (line-x, bits-y + bit-h),
+      )
+    }
     
     if range_.description != "" {
       let shapes_
