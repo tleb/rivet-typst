@@ -152,6 +152,34 @@ The range name (or key) defines the left- and rightmost bits (e.g. `7-4` goes fr
 }
 ```
 
+=== Start <format-start>
+
+By default, structures start at bit 0, but you may want to number bits from 1, or another arbitrary value. To do this, you can set the `start` property of a structure to the desired start value. For example,
+
+```json
+"main": {
+  "bits": 8,
+  "start": 4,
+  "ranges": {
+    "11-7": { ... },
+    "6-4": { ... }
+  }
+}
+```
+
+#let start-schema = (structures: (main: (bits: 8, start: 4, ranges: ("11-7": (name: ""), "6-4": (name: "")))))
+
+would render as
+
+#align(
+  center,
+  schema.render(
+    schema.load(start-schema),
+    width: 50%
+  )
+)
+
+
 == Range <format-range>
 
 A range represents a group of consecutive bits. It can have a name (displayed in the bit cells), a description (displayed under the structure) and / or values.
