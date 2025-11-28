@@ -387,8 +387,10 @@
   }
   let range-boundaries = ()
   for r in struct.ranges.values() {
-    let i = to-real-i(if config.ltr-bits {r.start} else {r.end})
-    range-boundaries.push(i)
+    let start-i = to-real-i(if config.ltr-bits {r.start} else {r.end})
+    let end-i = to-real-i(if config.ltr-bits {r.end} else {r.start}) + 1
+    range-boundaries.push(start-i)
+    range-boundaries.push(end-i)
   }
 
   // Draw colors
