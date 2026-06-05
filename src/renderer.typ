@@ -474,9 +474,9 @@
     shapes += draw-text(range_.name, txt-col, name-x, name-y, fill: bg-col)
 
     // paint end line only if needed
+    let is-not-limit = if config.ltr-bits { start-i != 0 } else { end-i != struct.bits - 1 }
     if (
-      start-i != 0
-        and end-i != struct.bits - 1
+        is-not-limit
         and ranges
           .at(
             i
