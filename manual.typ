@@ -363,7 +363,7 @@ structures:
 #let x = schema.xml-loader.load("schema.xml")
 #let s = schema.load(x)
 // From file
-#let x = schema.xml-loader.parse(yaml("schema.yaml").first())
+#let x = schema.xml-loader.parse(xml("schema.xml").first())
 #let s = schema.load(x)
 // Raw block
 #let s = schema.load(```xml
