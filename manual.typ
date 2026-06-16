@@ -105,7 +105,7 @@ Since the XML format is quite different from the other, you might find it helpfu
 
 A schema contains a dictionary of structures. There must be at least one defined structure named "main".
 
-It can also optionnaly contain a "colors" dictionary. More details about this in #link(<format-colors>)[Colors]
+It can also optionally contain a "colors" dictionary. More details about this in #link(<format-colors>)[Colors]
 
 ```json
 {
@@ -151,6 +151,34 @@ The range name (or key) defines the left- and rightmost bits (e.g. `7-4` goes fr
   }
 }
 ```
+
+=== Start <format-start>
+
+By default, structures start at bit 0, but you may want to number bits from 1, or another arbitrary value. To do this, you can set the `start` property of a structure to the desired start value. For example,
+
+```json
+"main": {
+  "bits": 8,
+  "start": 4,
+  "ranges": {
+    "11-7": { ... },
+    "6-4": { ... }
+  }
+}
+```
+
+#let start-schema = (structures: (main: (bits: 8, start: 4, ranges: ("11-7": (name: ""), "6-4": (name: "")))))
+
+would render as
+
+#align(
+  center,
+  schema.render(
+    schema.load(start-schema),
+    width: 50%
+  )
+)
+
 
 == Range <format-range>
 
@@ -335,7 +363,7 @@ structures:
 #let x = schema.xml-loader.load("schema.xml")
 #let s = schema.load(x)
 // From file
-#let x = schema.xml-loader.parse(yaml("schema.yaml").first())
+#let x = schema.xml-loader.parse(xml("schema.xml").first())
 #let s = schema.load(x)
 // Raw block
 #let s = schema.load(```xml

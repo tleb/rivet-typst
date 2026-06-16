@@ -9,7 +9,7 @@ It is based on the [homonymous Python script](https://git.kb28.ch/HEL/rivet/)
   <tr>
     <td>
       <a href="./gallery/example1.typ">
-        <img src="./gallery/example1.png" width="1000px">
+        <img src="./gallery/example1.png" width="1000px" alt="A black on white diagram showing the bit structure of a machine instruction, detailing operands, flags and selectors.">
       </a>
     </td>
   </tr>
@@ -19,7 +19,7 @@ It is based on the [homonymous Python script](https://git.kb28.ch/HEL/rivet/)
   <tr>
     <td>
       <a href="./gallery/example2.typ">
-        <img src="./gallery/example2.png" width="1000px">
+        <img src="./gallery/example2.png" width="1000px" alt="A white on blue diagram showing the bit structure of RISC-V memory instructions, detailing operands, flags and selectors.">
       </a>
     </td>
   </tr>
@@ -35,7 +35,7 @@ For more information, see the [manual](manual.pdf)
 
 To use this package, simply import `schema` from [rivet](https://typst.app/universe/package/rivet) and call `schema.load` to parse a schema description. Then use `schema.render` to render it, et voilà !
 ```typ
-#import "@preview/rivet:0.3.0": schema
-#let doc = schema.load("path/to/schema.yaml")
+#import "@preview/rivet:0.3.1": schema
+#let doc = schema.load(yaml("path/to/schema.yaml"))
 #schema.render(doc)
 ```
