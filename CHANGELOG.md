@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.3.1] - 2026-06-14
+- Support for non-consecutive ranges ([#13](https://git.kb28.ch/HEL/rivet-typst/pulls/13))
+- Prevent drawing separators on starting lines of fields ([#17](https://git.kb28.ch/HEL/rivet-typst/pulls/17))
+- Fix end line on non-consecutive ranges ending at the highest bit not being draw ([#18](https://git.kb28.ch/HEL/rivet-typst/pulls/18))
+- Add documentation for `start` property of structures ([61f13df815f](https://git.kb28.ch/HEL/rivet-typst/commit/6f13df815f99fd6be8b6b3a02b4d53bcc8fe0aff))
+
 ## [v0.3.0] - 2025-05-03
 - updated CeTZ to 0.3.4
 - updated to Typst 0.13.1
