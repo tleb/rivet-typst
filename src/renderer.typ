@@ -104,7 +104,7 @@
   )
 }
 
-#let draw-values(config, values, desc-x, desc-y) = {
+#let draw-values(config, values, desc-x, desc-y, anchor: "north-west") = {
   let shapes = ()
   let txt-col = config.text-color
   let bit-w = config.bit-height  // Why ? I don't remember
@@ -114,8 +114,10 @@
     desc-y += gap
     let txt = val + " = " + desc
     shapes += draw-text(
-      txt, txt-col, desc-x + bit-w / 2, desc-y,
-      anchor: "north-west",
+      txt, txt-col,
+      if anchor == "north-west" { desc-x + bit-w / 2 } else { desc-x },
+      desc-y,
+      anchor: anchor,
       font: config.italic-font-family,
       italic: true,
       size: config.italic-font-size
@@ -151,24 +153,28 @@
   let mid-x = start-x + width / 2
   shapes += draw-link(config, mid-x, start-y, desc-x, desc-y)
 
-  let txt-x = desc-x
-
-  if config.left-labels {
-    txt-x -= range_.description.len() * config.default-font-size / 2pt
+  // Left labels and their values end where the link ends, instead of
+  // starting at a width guessed from their length (0.5 em per byte, wrong
+  // for most fonts)
+  let (txt-x, anchor) = if config.left-labels {
+    (desc-x - config.arrow-margin * 2, "east")
+  } else {
+    (desc-x, "west")
   }
 
   shapes += draw-text(
     range_.description,
     config.text-color,
     txt-x, desc-y + bit-h / 2,
-    anchor: "west"
+    anchor: anchor
   )
 
   desc-y += config.default-font-size / 0.75pt
 
   if range_.values != none and range_.depends-on == none {
     let shapes_
-    (shapes_, _, desc-y) = draw-values(config, range_.values, txt-x, desc-y)
+    (shapes_, _, desc-y) = draw-values(config, range_.values, txt-x, desc-y,
+      anchor: "north-" + anchor)
     shapes += shapes_
   }
 
